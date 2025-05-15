@@ -1,4 +1,6 @@
-import React, { forwardRef } from 'react';
+import { forwardRef } from 'react';
+import ProfileSection from './ProfileSection';
+import ResumeSection from './ResumeSection';
 
 interface ExperienceEntry {
   position: string;
@@ -52,11 +54,11 @@ const ResumePreview = forwardRef<HTMLDivElement, ResumePreviewProps>(
         </div>
       </div>
 
-      <Section title="Profile">
-        <p className="text-justify leading-relaxed text-sm">{data.about}</p>
-      </Section>
+      <ProfileSection title="Profile">
+        <p className="leading-relaxed text-sm">{data.about}</p>
+      </ProfileSection>
 
-      <Section title="Employment History">
+      <ResumeSection title="Employment History">
         {data.experience.map((job, i) => (
           <div key={i} className="mb-4">
             <div className="flex justify-between items-start">
@@ -75,39 +77,22 @@ const ResumePreview = forwardRef<HTMLDivElement, ResumePreviewProps>(
             </ul>
           </div>
         ))}
-      </Section>
+      </ResumeSection>
 
-      <Section title="Skills">
+      <ResumeSection title="Skills">
         <p className="text-sm leading-relaxed whitespace-pre-line">
           {data.skills}
         </p>
-      </Section>
+      </ResumeSection>
 
-      <Section title="Education">
+      <ResumeSection title="Education">
         <p className="text-sm leading-relaxed whitespace-pre-line">
           {data.education}
         </p>
-      </Section>
+      </ResumeSection>
     </div>
   )
 );
 
 ResumePreview.displayName = 'ResumePreview';
 export default ResumePreview;
-
-function Section({
-  title,
-  children,
-}: {
-  title: string;
-  children: React.ReactNode;
-}) {
-  return (
-    <div className="mb-6">
-      <h2 className="text-sm font-semibold uppercase tracking-wide text-gray-700 border-b border-gray-300 pb-1 mb-2">
-        {title}
-      </h2>
-      {children}
-    </div>
-  );
-}
