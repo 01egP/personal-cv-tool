@@ -1,8 +1,13 @@
-import { forwardRef } from 'react';
+import React, { forwardRef } from 'react';
 
 interface ResumeData {
   name: string;
+  title?: string;
+  contact?: string;
   about: string;
+  experience?: string;
+  skills?: string;
+  education?: string;
 }
 
 interface ResumePreviewProps {
@@ -11,9 +16,32 @@ interface ResumePreviewProps {
 
 const ResumePreview = forwardRef<HTMLDivElement, ResumePreviewProps>(
   ({ data }, ref) => (
-    <div ref={ref} className="border p-4 m-4 bg-white w-[210mm] h-[297mm]">
-      <h1 className="text-3xl font-bold">{data.name}</h1>
-      <p className="mt-4">{data.about}</p>
+    <div className="resume" ref={ref}>
+      <h1>{data.name || 'Your Name'}</h1>
+      {data.title && (
+        <h2
+          style={{ fontSize: '18px', fontWeight: 'normal', marginTop: '4px' }}
+        >
+          {data.title}
+        </h2>
+      )}
+      {data.contact && (
+        <p style={{ fontSize: '14px', color: '#555', marginTop: '4px' }}>
+          {data.contact}
+        </p>
+      )}
+
+      <h2>Profile</h2>
+      <p>{data.about || 'Short summary about yourself...'}</p>
+
+      <h2>Experience</h2>
+      <p>{data.experience || 'List your work experience here.'}</p>
+
+      <h2>Skills</h2>
+      <p>{data.skills || 'List your skills here.'}</p>
+
+      <h2>Education</h2>
+      <p>{data.education || 'List your education here.'}</p>
     </div>
   )
 );
