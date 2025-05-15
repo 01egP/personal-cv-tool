@@ -1,6 +1,4 @@
-import { forwardRef } from 'react';
-import ProfileSection from './ProfileSection';
-import ResumeSection from './ResumeSection';
+import React, { forwardRef } from 'react';
 
 interface ExperienceEntry {
   position: string;
@@ -32,70 +30,115 @@ const ResumePreview = forwardRef<HTMLDivElement, ResumePreviewProps>(
   ({ data }, ref) => (
     <div
       ref={ref}
-      className="bg-white w-full max-w-[700px] p-8 shadow-lg rounded-lg text-gray-800 font-professional"
+      className="w-full max-w-[1000px] mx-auto bg-white text-gray-800 font-sans shadow-lg rounded-lg overflow-hidden flex"
     >
-      <div className="text-center mb-4">
-        <h1 className="text-3xl font-bold uppercase">
-          {data.name || 'Your Name'}
-        </h1>
-        {data.title && <p className="text-base text-gray-700">{data.title}</p>}
-      </div>
+      {/* Sidebar */}
+      <aside className="w-1/3 bg-gray-100 p-6 space-y-6 text-sm">
+        <div>
+          <h1 className="text-xl font-bold leading-tight">
+            {data.name || 'Your Name'}
+          </h1>
+          <p className="text-sm text-gray-600">{data.title}</p>
+        </div>
+        <div className="space-y-1">
+          <p>
+            <span className="font-semibold">Location:</span> {data.location}
+          </p>
+          <p>
+            <span className="font-semibold">Email:</span> {data.email}
+          </p>
+          <p>
+            <span className="font-semibold">Phone:</span> {data.phone}
+          </p>
+          {data.linkedin && (
+            <p className="break-words">
+              <span className="font-semibold">LinkedIn:</span>
+              <br />
+              <a
+                href={data.linkedin}
+                className="hover:underline"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {data.linkedin}
+              </a>
+            </p>
+          )}
+        </div>
+        <div>
+          <h2 className="text-sm font-semibold uppercase tracking-wide border-b border-gray-400 pb-1 mb-2">
+            Skills
+          </h2>
+          <div className="space-y-2 text-gray-700 text-sm leading-snug">
+            {data.skills.split('\n').map((line, i) => {
+              const [label, values] = line.split(':');
+              return (
+                <div key={i}>
+                  <span className="font-semibold">{label}:</span>{' '}
+                  {values?.trim()}
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </aside>
 
-      <div className="text-sm text-gray-700 text-center mb-6">
-        <div>{data.location}</div>
-        <span> {data.email} |</span>
-        <span> {data.phone} |</span>
-        <span> {data.linkedin}</span>
-      </div>
+      {/* Main Content */}
+      <main className="w-2/3 p-8 space-y-8 text-[13px]">
+        <section>
+          <h2 className="text-sm font-semibold uppercase tracking-wide text-gray-800 border-b border-gray-300 pb-1 mb-2">
+            Profile
+          </h2>
+          <p className="text-[13px] leading-snug text-gray-800 font-normal text-left">
+            {data.about}
+          </p>
+        </section>
 
-      <ProfileSection title="Profile">
-        <p className="text-[13px] leading-snug text-gray-800 font-light text-left">
-          {data.about}
-        </p>
-      </ProfileSection>
-
-      <ResumeSection title="Employment History">
-        {data.experience.map((job, i) => (
-          <div key={i} className="mb-4">
-            <div className="flex justify-between items-start">
-              <h3 className="font-semibold text-sm">
-                {job.position}, {job.company}
-              </h3>
-              <div className="text-xs text-gray-500 text-right">
+        <section>
+          <h2 className="text-sm font-semibold uppercase tracking-wide text-gray-800 border-b border-gray-300 pb-1 mb-2">
+            Employment History
+          </h2>
+          {data.experience.map((job, i) => (
+            <div key={i} className="mb-4">
+              <div className="flex justify-between items-start">
                 <div>
+                  <h3 className="font-semibold text-sm">
+                    {job.company}, {job.location}
+                  </h3>
+                  <p className="text-sm text-gray-700">{job.position}</p>
+                </div>
+                <div className="text-xs text-gray-500 text-right">
                   {job.startDate} — {job.endDate}
                 </div>
-                <div>{job.location}</div>
               </div>
+              <ul className="list-disc pl-5 mt-2 text-[13px] leading-snug text-gray-800 font-normal space-y-1">
+                {job.bullets.map((b, j) => b && <li key={j}>{b}</li>)}
+              </ul>
             </div>
-            <ul className="list-disc pl-5 mt-2 text-sm leading-snug text-justify space-y-1">
-              {job.bullets.map((b, j) => b && <li key={j}>{b}</li>)}
-            </ul>
-          </div>
-        ))}
-      </ResumeSection>
-
-      <ResumeSection title="Skills">
-        <div className="text-sm leading-snug space-y-1">
-          {data.skills.split('\n').map((line, i) => (
-            <p key={i}>{line}</p>
           ))}
-        </div>
-      </ResumeSection>
+        </section>
 
-      <ResumeSection title="Education">
-        <div className="space-y-2 text-sm leading-snug">
-          {data.education.split('\n').map((line, i) => {
-            const [course, details] = line.split(',');
-            return (
-              <div key={i}>
-                <div className="font-medium">{course?.trim()}</div>
-                <div className="text-gray-600 text-xs">{details?.trim()}</div>
-              </div>
-            );
-          })}
-        </div>
-      </ResumeSection>
+        <section>
+          <h2 className="text-sm font-semibold uppercase tracking-wide text-gray-800 border-b border-gray-300 pb-1 mb-2">
+            Education
+          </h2>
+          <div className="space-y-4 text-sm">
+            {data.education.split('\n').map((line, i) => {
+              const [institution, details] = line.split(',');
+              return (
+                <div key={i}>
+                  <div className="font-semibold">{institution?.trim()}</div>
+                  {details && (
+                    <div className="text-xs text-gray-600">
+                      {details.trim()}
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        </section>
+      </main>
     </div>
   )
 );
