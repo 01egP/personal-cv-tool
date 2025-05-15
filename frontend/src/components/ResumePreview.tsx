@@ -32,30 +32,26 @@ const ResumePreview = forwardRef<HTMLDivElement, ResumePreviewProps>(
   ({ data }, ref) => (
     <div
       ref={ref}
-      className="bg-white w-full max-w-3xl p-10 shadow-lg rounded-lg text-gray-800 font-sans"
+      className="bg-white w-full max-w-[700px] p-8 shadow-lg rounded-lg text-gray-800 font-professional"
     >
-      <div className="text-center mb-6">
-        <h1 className="text-3xl uppercase">{data.name || 'Your Name'}</h1>
+      <div className="text-center mb-4">
+        <h1 className="text-3xl font-bold uppercase">
+          {data.name || 'Your Name'}
+        </h1>
         {data.title && <p className="text-base text-gray-700">{data.title}</p>}
       </div>
 
-      <div className="text-right mb-6 space-y-1 text-sm text-gray-700">
-        <div>
-          <span className="font-medium">Location:</span> {data.location}
-        </div>
-        <div>
-          <span className="font-medium">LinkedIn:</span> {data.linkedin}
-        </div>
-        <div>
-          <span className="font-medium">Email:</span> {data.email}
-        </div>
-        <div>
-          <span className="font-medium">Phone:</span> {data.phone}
-        </div>
+      <div className="text-sm text-gray-700 text-center mb-6">
+        <div>{data.location}</div>
+        <span> {data.email} |</span>
+        <span> {data.phone} |</span>
+        <span> {data.linkedin}</span>
       </div>
 
       <ProfileSection title="Profile">
-        <p className="leading-relaxed text-sm">{data.about}</p>
+        <p className="text-[13px] leading-snug text-gray-800 font-light text-left">
+          {data.about}
+        </p>
       </ProfileSection>
 
       <ResumeSection title="Employment History">
@@ -65,14 +61,14 @@ const ResumePreview = forwardRef<HTMLDivElement, ResumePreviewProps>(
               <h3 className="font-semibold text-sm">
                 {job.position}, {job.company}
               </h3>
-              <div className="text-sm text-gray-500 text-right">
+              <div className="text-xs text-gray-500 text-right">
                 <div>
                   {job.startDate} — {job.endDate}
                 </div>
                 <div>{job.location}</div>
               </div>
             </div>
-            <ul className="list-disc pl-5 mt-2 text-sm leading-relaxed text-justify space-y-1">
+            <ul className="list-disc pl-5 mt-2 text-sm leading-snug text-justify space-y-1">
               {job.bullets.map((b, j) => b && <li key={j}>{b}</li>)}
             </ul>
           </div>
@@ -80,15 +76,25 @@ const ResumePreview = forwardRef<HTMLDivElement, ResumePreviewProps>(
       </ResumeSection>
 
       <ResumeSection title="Skills">
-        <p className="text-sm leading-relaxed whitespace-pre-line">
-          {data.skills}
-        </p>
+        <div className="text-sm leading-snug space-y-1">
+          {data.skills.split('\n').map((line, i) => (
+            <p key={i}>{line}</p>
+          ))}
+        </div>
       </ResumeSection>
 
       <ResumeSection title="Education">
-        <p className="text-sm leading-relaxed whitespace-pre-line">
-          {data.education}
-        </p>
+        <div className="space-y-2 text-sm leading-snug">
+          {data.education.split('\n').map((line, i) => {
+            const [course, details] = line.split(',');
+            return (
+              <div key={i}>
+                <div className="font-medium">{course?.trim()}</div>
+                <div className="text-gray-600 text-xs">{details?.trim()}</div>
+              </div>
+            );
+          })}
+        </div>
       </ResumeSection>
     </div>
   )
