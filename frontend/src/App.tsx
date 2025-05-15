@@ -4,7 +4,16 @@ import ResumePreview from './components/ResumePreview';
 import { useReactToPrint } from 'react-to-print';
 
 function App() {
-  const [data, setData] = useState({ name: '', about: '' });
+  const [data, setData] = useState({
+    name: '',
+    title: '',
+    contact: '',
+    about: '',
+    experience: '',
+    skills: '',
+    education: '',
+  });
+
   const componentRef = useRef(null);
 
   const handlePrint = useReactToPrint({
@@ -13,12 +22,12 @@ function App() {
   });
 
   return (
-    <div className="flex flex-col items-center">
+    <div className="container">
       <ResumeForm onChange={setData} />
       <ResumePreview ref={componentRef} data={data} />
       <button
         onClick={handlePrint}
-        className="bg-blue-500 text-white px-4 py-2 mt-4"
+        className="border mt-4 px-4 py-2 bg-gray-100 hover:bg-gray-200"
       >
         Download PDF
       </button>

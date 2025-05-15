@@ -3,12 +3,12 @@ import { useState } from 'react';
 interface ResumeFormProps {
   onChange: (data: {
     name: string;
+    title: string;
+    contact: string;
     about: string;
-    education?: string;
-    title?: string;
-    contact?: string;
-    experience?: string;
-    skills?: string;
+    experience: string;
+    skills: string;
+    education: string;
   }) => void;
 }
 
@@ -31,57 +31,59 @@ export default function ResumeForm({ onChange }: ResumeFormProps) {
     onChange(newData);
   }
 
+  const inputClass =
+    'w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 transition';
+
   return (
-    <div className="p-4 w-full max-w-2xl">
+    <div className="w-full max-w-3xl bg-white p-6 rounded-lg shadow mb-8 space-y-4">
       <input
         name="name"
-        placeholder="Your Name"
+        placeholder="Full Name"
         value={data.name}
         onChange={handleChange}
-        className="border p-2 w-full mb-2"
+        className={inputClass}
       />
       <input
         name="title"
-        placeholder="Your Title (e.g. Full Stack Developer)"
+        placeholder="Job Title (e.g. Full Stack Developer)"
         value={data.title}
         onChange={handleChange}
-        className="border p-2 w-full mb-2"
+        className={inputClass}
       />
       <input
         name="contact"
         placeholder="Contact Info (city, email, LinkedIn...)"
         value={data.contact}
         onChange={handleChange}
-        className="border p-2 w-full mb-2"
+        className={inputClass}
       />
-
       <textarea
         name="about"
-        placeholder="About you"
+        placeholder="Profile Summary"
         value={data.about}
         onChange={handleChange}
-        className="border p-2 w-full mb-2"
+        className={`${inputClass} h-24`}
       />
       <textarea
         name="experience"
-        placeholder="Work experience"
+        placeholder="Experience"
         value={data.experience}
         onChange={handleChange}
-        className="border p-2 w-full mb-2"
+        className={`${inputClass} h-24`}
       />
       <textarea
         name="skills"
         placeholder="Skills"
         value={data.skills}
         onChange={handleChange}
-        className="border p-2 w-full mb-2"
+        className={`${inputClass} h-24`}
       />
       <textarea
         name="education"
         placeholder="Education"
         value={data.education}
         onChange={handleChange}
-        className="border p-2 w-full mb-2"
+        className={`${inputClass} h-24`}
       />
     </div>
   );
