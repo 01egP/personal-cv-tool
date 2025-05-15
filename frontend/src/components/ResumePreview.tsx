@@ -33,9 +33,7 @@ const ResumePreview = forwardRef<HTMLDivElement, ResumePreviewProps>(
       className="bg-white w-full max-w-3xl p-10 shadow-lg rounded-lg text-gray-800 font-sans"
     >
       <div className="text-center mb-6">
-        <h1 className="text-3xl font-bold uppercase">
-          {data.name || 'Your Name'}
-        </h1>
+        <h1 className="text-3xl uppercase">{data.name || 'Your Name'}</h1>
         {data.title && <p className="text-base text-gray-700">{data.title}</p>}
       </div>
 
