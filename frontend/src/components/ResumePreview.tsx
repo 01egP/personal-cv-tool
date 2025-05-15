@@ -33,22 +33,25 @@ const ResumePreview = forwardRef<HTMLDivElement, ResumePreviewProps>(
       className="w-full max-w-[1000px] mx-auto bg-white text-gray-800 font-sans shadow-lg rounded-lg overflow-hidden flex"
     >
       {/* Sidebar */}
-      <aside className="w-1/3 bg-gray-100 p-6 space-y-6 text-sm">
-        <div>
+      <aside className="w-1/3 bg-gray-100 p-6 space-y-8 text-sm">
+        <div className="space-y-1">
           <h1 className="text-xl font-bold leading-tight">
             {data.name || 'Your Name'}
           </h1>
           <p className="text-sm text-gray-600">{data.title}</p>
         </div>
-        <div className="space-y-1">
+        <div className="space-y-2">
           <p>
-            <span className="font-semibold">Location:</span> {data.location}
+            <span className="font-semibold">Location:</span>{' '}
+            <span className="text-[13px] text-gray-700">{data.location}</span>
           </p>
           <p>
-            <span className="font-semibold">Email:</span> {data.email}
+            <span className="font-semibold">Email:</span>{' '}
+            <span className="text-[13px] text-gray-700">{data.email}</span>
           </p>
           <p>
-            <span className="font-semibold">Phone:</span> {data.phone}
+            <span className="font-semibold">Phone:</span>{' '}
+            <span className="text-[13px] text-gray-700">{data.phone}</span>
           </p>
           {data.linkedin && (
             <p className="break-words">
@@ -56,7 +59,7 @@ const ResumePreview = forwardRef<HTMLDivElement, ResumePreviewProps>(
               <br />
               <a
                 href={data.linkedin}
-                className="hover:underline"
+                className="text-[13px] text-gray-700 hover:underline"
                 target="_blank"
                 rel="noopener noreferrer"
               >
@@ -69,13 +72,15 @@ const ResumePreview = forwardRef<HTMLDivElement, ResumePreviewProps>(
           <h2 className="text-sm font-semibold uppercase tracking-wide border-b border-gray-400 pb-1 mb-2">
             Skills
           </h2>
-          <div className="space-y-2 text-gray-700 text-sm leading-snug">
+          <div className="space-y-2 text-gray-700 text-[13px] leading-snug">
             {data.skills.split('\n').map((line, i) => {
               const [label, values] = line.split(':');
               return (
                 <div key={i}>
-                  <span className="font-semibold">{label}:</span>{' '}
-                  {values?.trim()}
+                  <span className="font-semibold text-sm">{label}:</span>{' '}
+                  <span className="text-[13px] font-normal">
+                    {values?.trim()}
+                  </span>
                 </div>
               );
             })}
@@ -99,10 +104,10 @@ const ResumePreview = forwardRef<HTMLDivElement, ResumePreviewProps>(
             Employment History
           </h2>
           {data.experience.map((job, i) => (
-            <div key={i} className="mb-4">
+            <div key={i} className="mb-6">
               <div className="flex justify-between items-start">
                 <div>
-                  <h3 className="font-semibold text-sm">
+                  <h3 className="font-semibold text-sm text-gray-900">
                     {job.company}, {job.location}
                   </h3>
                   <p className="text-sm text-gray-700">{job.position}</p>
