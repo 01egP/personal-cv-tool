@@ -16,7 +16,10 @@ const App = () => {
   const [data, setData] = useState<{
     name: string;
     title: string;
-    contact: string;
+    location: string;
+    email: string;
+    phone: string;
+    linkedin: string;
     about: string;
     experience: ExperienceEntry[];
     skills: string;
@@ -24,7 +27,10 @@ const App = () => {
   }>({
     name: '',
     title: '',
-    contact: '',
+    location: '',
+    email: '',
+    phone: '',
+    linkedin: '',
     about: '',
     experience: [],
     skills: '',

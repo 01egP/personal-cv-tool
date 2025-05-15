@@ -12,7 +12,10 @@ interface ExperienceEntry {
 interface ResumeData {
   name: string;
   title: string;
-  contact: string;
+  location: string;
+  email: string;
+  phone: string;
+  linkedin: string;
   about: string;
   experience: ExperienceEntry[];
   skills: string;
@@ -27,17 +30,28 @@ const ResumePreview = forwardRef<HTMLDivElement, ResumePreviewProps>(
   ({ data }, ref) => (
     <div
       ref={ref}
-      className="bg-white w-full max-w-[800px] p-12 shadow-lg rounded-md mt-8 text-gray-800 font-serif"
+      className="bg-white w-full max-w-3xl p-10 shadow-lg rounded-lg text-gray-800 font-sans"
     >
-      {/* Header */}
-      <div className="text-center mb-8">
-        <h1 className="text-3xl font-bold tracking-wide uppercase">
+      <div className="text-center mb-6">
+        <h1 className="text-3xl font-bold uppercase">
           {data.name || 'Your Name'}
         </h1>
-        {data.title && <p className="text-base mt-1">{data.title}</p>}
-        {data.contact && (
-          <p className="text-sm text-gray-600 mt-1">{data.contact}</p>
-        )}
+        {data.title && <p className="text-base text-gray-700">{data.title}</p>}
+      </div>
+
+      <div className="text-right mb-6 space-y-1 text-sm text-gray-700">
+        <div>
+          <span className="font-medium">Location:</span> {data.location}
+        </div>
+        <div>
+          <span className="font-medium">LinkedIn:</span> {data.linkedin}
+        </div>
+        <div>
+          <span className="font-medium">Email:</span> {data.email}
+        </div>
+        <div>
+          <span className="font-medium">Phone:</span> {data.phone}
+        </div>
       </div>
 
       <Section title="Profile">
@@ -66,11 +80,15 @@ const ResumePreview = forwardRef<HTMLDivElement, ResumePreviewProps>(
       </Section>
 
       <Section title="Skills">
-        <p className="text-sm leading-relaxed">{data.skills}</p>
+        <p className="text-sm leading-relaxed whitespace-pre-line">
+          {data.skills}
+        </p>
       </Section>
 
       <Section title="Education">
-        <p className="text-sm leading-relaxed">{data.education}</p>
+        <p className="text-sm leading-relaxed whitespace-pre-line">
+          {data.education}
+        </p>
       </Section>
     </div>
   )
@@ -79,7 +97,6 @@ const ResumePreview = forwardRef<HTMLDivElement, ResumePreviewProps>(
 ResumePreview.displayName = 'ResumePreview';
 export default ResumePreview;
 
-// 🔷 Универсальный компонент секции
 function Section({
   title,
   children,
@@ -89,7 +106,7 @@ function Section({
 }) {
   return (
     <div className="mb-6">
-      <h2 className="text-sm font-semibold uppercase tracking-wider border-b border-gray-300 pb-1 mb-2">
+      <h2 className="text-sm font-semibold uppercase tracking-wide text-gray-700 border-b border-gray-300 pb-1 mb-2">
         {title}
       </h2>
       {children}

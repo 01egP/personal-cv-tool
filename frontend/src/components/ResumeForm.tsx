@@ -1,4 +1,3 @@
-// Tailwind-styled ResumeForm.tsx with dynamic experience input
 import { useState } from 'react';
 
 interface ExperienceEntry {
@@ -14,7 +13,10 @@ interface ResumeFormProps {
   onChange: (data: {
     name: string;
     title: string;
-    contact: string;
+    location: string;
+    email: string;
+    phone: string;
+    linkedin: string;
     about: string;
     experience: ExperienceEntry[];
     skills: string;
@@ -26,7 +28,10 @@ export default function ResumeForm({ onChange }: ResumeFormProps) {
   const [data, setData] = useState({
     name: '',
     title: '',
-    contact: '',
+    location: '',
+    email: '',
+    phone: '',
+    linkedin: '',
     about: '',
     experience: [
       {
@@ -84,7 +89,7 @@ export default function ResumeForm({ onChange }: ResumeFormProps) {
   const inputClass = 'w-full p-2 border border-gray-300 rounded';
 
   return (
-    <div className="w-full max-w-3xl bg-white p-6 rounded-lg shadow mb-8 space-y-4">
+    <div className="w-full max-w-3xl bg-white p-6 rounded-lg shadow space-y-6">
       <input
         name="name"
         placeholder="Full Name"
@@ -99,13 +104,41 @@ export default function ResumeForm({ onChange }: ResumeFormProps) {
         onChange={handleChange}
         className={inputClass}
       />
-      <input
-        name="contact"
-        placeholder="Contact Info"
-        value={data.contact}
-        onChange={handleChange}
-        className={inputClass}
-      />
+
+      <div className="border p-4 rounded space-y-2">
+        <h3 className="text-sm font-medium text-gray-700">
+          Contact Information
+        </h3>
+        <input
+          name="location"
+          placeholder="Location"
+          value={data.location}
+          onChange={handleChange}
+          className={inputClass}
+        />
+        <input
+          name="email"
+          placeholder="Email"
+          value={data.email}
+          onChange={handleChange}
+          className={inputClass}
+        />
+        <input
+          name="phone"
+          placeholder="Phone"
+          value={data.phone}
+          onChange={handleChange}
+          className={inputClass}
+        />
+        <input
+          name="linkedin"
+          placeholder="LinkedIn"
+          value={data.linkedin}
+          onChange={handleChange}
+          className={inputClass}
+        />
+      </div>
+
       <textarea
         name="about"
         placeholder="Profile Summary"
@@ -116,9 +149,8 @@ export default function ResumeForm({ onChange }: ResumeFormProps) {
 
       <div className="border p-4 rounded space-y-2">
         <h3 className="text-sm font-medium text-gray-700">Experience</h3>
-
         {data.experience.map((entry, i) => (
-          <div key={i} className="border p-4 rounded space-y-2">
+          <div key={i} className="space-y-2">
             <input
               placeholder="Position"
               value={entry.position}
@@ -163,17 +195,16 @@ export default function ResumeForm({ onChange }: ResumeFormProps) {
             </div>
             <textarea
               placeholder="Bullet points (one per line)"
-              value={entry.bullets.join('\\n')}
+              value={entry.bullets.join('\n')}
               onChange={(e) =>
                 handleExperienceChange(i, {
-                  bullets: e.target.value.split('\\n'),
+                  bullets: e.target.value.split('\n'),
                 })
               }
               className={inputClass + ' h-24'}
             />
           </div>
         ))}
-
         <button
           onClick={addExperience}
           type="button"
