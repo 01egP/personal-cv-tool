@@ -1,11 +1,20 @@
 import React, { forwardRef } from 'react';
 
+interface ExperienceEntry {
+  position: string;
+  company: string;
+  location: string;
+  startDate: string;
+  endDate: string;
+  bullets: string[];
+}
+
 interface ResumeData {
   name: string;
   title: string;
   contact: string;
   about: string;
-  experience: string;
+  experience: ExperienceEntry[];
   skills: string;
   education: string;
 }
@@ -18,52 +27,72 @@ const ResumePreview = forwardRef<HTMLDivElement, ResumePreviewProps>(
   ({ data }, ref) => (
     <div
       ref={ref}
-      className="bg-white w-full max-w-3xl p-10 shadow-md rounded-lg mt-8 text-gray-800"
+      className="bg-white w-full max-w-[800px] p-12 shadow-lg rounded-md mt-8 text-gray-800 font-serif"
     >
       {/* Header */}
-      <div className="mb-6">
-        <h1 className="text-3xl font-bold uppercase tracking-wide">
+      <div className="text-center mb-8">
+        <h1 className="text-3xl font-bold tracking-wide uppercase">
           {data.name || 'Your Name'}
         </h1>
-        {data.title && (
-          <div className="text-lg text-gray-600 mt-1">{data.title}</div>
-        )}
+        {data.title && <p className="text-base mt-1">{data.title}</p>}
         {data.contact && (
-          <p className="text-sm text-gray-500 mt-1 whitespace-pre-line">
-            {data.contact}
-          </p>
+          <p className="text-sm text-gray-600 mt-1">{data.contact}</p>
         )}
       </div>
 
-      {/* Profile */}
-      <Section title="Profile" content={data.about} />
+      <Section title="Profile">
+        <p className="text-justify leading-relaxed text-sm">{data.about}</p>
+      </Section>
 
-      {/* Experience */}
-      <Section title="Employment History" content={data.experience} />
+      <Section title="Employment History">
+        {data.experience.map((job, i) => (
+          <div key={i} className="mb-4">
+            <div className="flex justify-between items-start">
+              <h3 className="font-semibold text-sm">
+                {job.position}, {job.company}
+              </h3>
+              <div className="text-sm text-gray-500 text-right">
+                <div>
+                  {job.startDate} — {job.endDate}
+                </div>
+                <div>{job.location}</div>
+              </div>
+            </div>
+            <ul className="list-disc pl-5 mt-2 text-sm leading-relaxed text-justify space-y-1">
+              {job.bullets.map((b, j) => b && <li key={j}>{b}</li>)}
+            </ul>
+          </div>
+        ))}
+      </Section>
 
-      {/* Skills */}
-      <Section title="Skills" content={data.skills} />
+      <Section title="Skills">
+        <p className="text-sm leading-relaxed">{data.skills}</p>
+      </Section>
 
-      {/* Education */}
-      <Section title="Education" content={data.education} />
+      <Section title="Education">
+        <p className="text-sm leading-relaxed">{data.education}</p>
+      </Section>
     </div>
   )
 );
 
 ResumePreview.displayName = 'ResumePreview';
-
 export default ResumePreview;
 
-// Компонент секции для повторного использования
-function Section({ title, content }: { title: string; content: string }) {
+// 🔷 Универсальный компонент секции
+function Section({
+  title,
+  children,
+}: {
+  title: string;
+  children: React.ReactNode;
+}) {
   return (
     <div className="mb-6">
-      <h2 className="text-lg font-semibold uppercase tracking-wide text-gray-700 border-b border-gray-300 pb-1 mb-2">
+      <h2 className="text-sm font-semibold uppercase tracking-wider border-b border-gray-300 pb-1 mb-2">
         {title}
       </h2>
-      <p className="text-sm whitespace-pre-line leading-relaxed">
-        {content || `Your ${title.toLowerCase()} goes here.`}
-      </p>
+      {children}
     </div>
   );
 }

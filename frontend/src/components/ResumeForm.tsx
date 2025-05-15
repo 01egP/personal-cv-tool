@@ -1,4 +1,14 @@
+// Tailwind-styled ResumeForm.tsx with dynamic experience input
 import { useState } from 'react';
+
+interface ExperienceEntry {
+  position: string;
+  company: string;
+  location: string;
+  startDate: string;
+  endDate: string;
+  bullets: string[];
+}
 
 interface ResumeFormProps {
   onChange: (data: {
@@ -6,7 +16,7 @@ interface ResumeFormProps {
     title: string;
     contact: string;
     about: string;
-    experience: string;
+    experience: ExperienceEntry[];
     skills: string;
     education: string;
   }) => void;
@@ -18,7 +28,16 @@ export default function ResumeForm({ onChange }: ResumeFormProps) {
     title: '',
     contact: '',
     about: '',
-    experience: '',
+    experience: [
+      {
+        position: '',
+        company: '',
+        location: '',
+        startDate: '',
+        endDate: '',
+        bullets: [''],
+      },
+    ],
     skills: '',
     education: '',
   });
@@ -26,13 +45,43 @@ export default function ResumeForm({ onChange }: ResumeFormProps) {
   function handleChange(
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) {
-    const newData = { ...data, [e.target.name]: e.target.value };
+    const { name, value } = e.target;
+    const updated = { ...data, [name]: value };
+    setData(updated);
+    onChange(updated);
+  }
+
+  function handleExperienceChange(
+    index: number,
+    update: Partial<ExperienceEntry>
+  ) {
+    const newExp = [...data.experience];
+    newExp[index] = { ...newExp[index], ...update };
+    const newData = { ...data, experience: newExp };
     setData(newData);
     onChange(newData);
   }
 
-  const inputClass =
-    'w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 transition';
+  function addExperience() {
+    const newData = {
+      ...data,
+      experience: [
+        ...data.experience,
+        {
+          position: '',
+          company: '',
+          location: '',
+          startDate: '',
+          endDate: '',
+          bullets: [''],
+        },
+      ],
+    };
+    setData(newData);
+    onChange(newData);
+  }
+
+  const inputClass = 'w-full p-2 border border-gray-300 rounded';
 
   return (
     <div className="w-full max-w-3xl bg-white p-6 rounded-lg shadow mb-8 space-y-4">
@@ -45,14 +94,14 @@ export default function ResumeForm({ onChange }: ResumeFormProps) {
       />
       <input
         name="title"
-        placeholder="Job Title (e.g. Full Stack Developer)"
+        placeholder="Job Title"
         value={data.title}
         onChange={handleChange}
         className={inputClass}
       />
       <input
         name="contact"
-        placeholder="Contact Info (city, email, LinkedIn...)"
+        placeholder="Contact Info"
         value={data.contact}
         onChange={handleChange}
         className={inputClass}
@@ -62,28 +111,91 @@ export default function ResumeForm({ onChange }: ResumeFormProps) {
         placeholder="Profile Summary"
         value={data.about}
         onChange={handleChange}
-        className={`${inputClass} h-24`}
+        className={inputClass + ' h-24'}
       />
-      <textarea
-        name="experience"
-        placeholder="Experience"
-        value={data.experience}
-        onChange={handleChange}
-        className={`${inputClass} h-24`}
-      />
+
+      <div className="border p-4 rounded space-y-2">
+        <h3 className="text-sm font-medium text-gray-700">Experience</h3>
+
+        {data.experience.map((entry, i) => (
+          <div key={i} className="border p-4 rounded space-y-2">
+            <input
+              placeholder="Position"
+              value={entry.position}
+              onChange={(e) =>
+                handleExperienceChange(i, { position: e.target.value })
+              }
+              className={inputClass}
+            />
+            <input
+              placeholder="Company"
+              value={entry.company}
+              onChange={(e) =>
+                handleExperienceChange(i, { company: e.target.value })
+              }
+              className={inputClass}
+            />
+            <input
+              placeholder="Location"
+              value={entry.location}
+              onChange={(e) =>
+                handleExperienceChange(i, { location: e.target.value })
+              }
+              className={inputClass}
+            />
+            <div className="flex gap-2">
+              <input
+                placeholder="Start Date"
+                value={entry.startDate}
+                onChange={(e) =>
+                  handleExperienceChange(i, { startDate: e.target.value })
+                }
+                className={inputClass}
+              />
+              <input
+                placeholder="End Date"
+                value={entry.endDate}
+                onChange={(e) =>
+                  handleExperienceChange(i, { endDate: e.target.value })
+                }
+                className={inputClass}
+              />
+            </div>
+            <textarea
+              placeholder="Bullet points (one per line)"
+              value={entry.bullets.join('\\n')}
+              onChange={(e) =>
+                handleExperienceChange(i, {
+                  bullets: e.target.value.split('\\n'),
+                })
+              }
+              className={inputClass + ' h-24'}
+            />
+          </div>
+        ))}
+
+        <button
+          onClick={addExperience}
+          type="button"
+          className="mt-2 text-sm px-3 py-1 border border-gray-300 rounded hover:bg-gray-100 transition"
+        >
+          + Add Experience
+        </button>
+      </div>
+
       <textarea
         name="skills"
         placeholder="Skills"
         value={data.skills}
         onChange={handleChange}
-        className={`${inputClass} h-24`}
+        className={inputClass + ' h-24'}
       />
       <textarea
         name="education"
         placeholder="Education"
         value={data.education}
         onChange={handleChange}
-        className={`${inputClass} h-24`}
+        className={inputClass + ' h-24'}
       />
     </div>
   );

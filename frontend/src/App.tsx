@@ -3,13 +3,30 @@ import ResumeForm from './components/ResumeForm';
 import ResumePreview from './components/ResumePreview';
 import { useReactToPrint } from 'react-to-print';
 
-function App() {
-  const [data, setData] = useState({
+interface ExperienceEntry {
+  position: string;
+  company: string;
+  location: string;
+  startDate: string;
+  endDate: string;
+  bullets: string[];
+}
+
+const App = () => {
+  const [data, setData] = useState<{
+    name: string;
+    title: string;
+    contact: string;
+    about: string;
+    experience: ExperienceEntry[];
+    skills: string;
+    education: string;
+  }>({
     name: '',
     title: '',
     contact: '',
     about: '',
-    experience: '',
+    experience: [],
     skills: '',
     education: '',
   });
@@ -22,17 +39,19 @@ function App() {
   });
 
   return (
-    <div className="container">
+    <div className="container mx-auto p-4">
       <ResumeForm onChange={setData} />
       <ResumePreview ref={componentRef} data={data} />
-      <button
-        onClick={handlePrint}
-        className="border mt-4 px-4 py-2 bg-gray-100 hover:bg-gray-200"
-      >
-        Download PDF
-      </button>
+      <div className="text-center mt-4">
+        <button
+          onClick={handlePrint}
+          className="px-4 py-2 bg-blue-500 text-white rounded"
+        >
+          Download PDF
+        </button>
+      </div>
     </div>
   );
-}
+};
 
 export default App;
